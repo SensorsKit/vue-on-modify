@@ -37,7 +37,6 @@ const bind = (el, binding, vnode) => {
     if (isModified(strOld, strNew)) {
       onModify(strOld, strNew)
     }
-    // strOld = strNew
   }
 
   registeredHandlers.push(
