@@ -1,9 +1,5 @@
 const isModified = (strOld, strNew) => {
-  if (strOld === strNew) {
-    return false
-  } else {
-    return true
-  }
+  return (strOld !== strNew)
 }
 
 export default isModified

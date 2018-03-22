@@ -2,22 +2,27 @@
   <div class="container">
     <input autofocus v-model="value" type="text" v-on-modify="onModify">
     <p>你刚刚修改了 {{count}} 次。</p>
+    <p>修改前值为 {{valueBefore}}</p>
+    <p>修改后值为 {{valueAfter}}</p>
     <span class="icon-delete" @click="$emit('remove')"></span>
   </div>
 </template>
-
 <script>
-export default {
+  export default {
   data() {
     return {
       value: '',
-      count: 0
+      count: 0,
+      valueBefore: null,
+      valueAfter: null
     }
   },
 
   methods: {
-    onModify() {
+    onModify(strOld, strNew) {
       this.count++
+      this.valueBefore = strOld
+      this.valueAfter = strNew
     }
   }
 }

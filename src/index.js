@@ -18,6 +18,8 @@ const on = (el, eventName, callback) => {
 
 const bind = (el, binding, vnode) => {
   const onModify = binding.value
+  let strOld = null
+  let strNew = null
 
   if (typeof onModify !== 'function') {
     log.e('指令需要传入一个函数')
@@ -26,9 +28,6 @@ const bind = (el, binding, vnode) => {
 
   unbind(el)
 
-  let strOld = null
-  let strNew = null
-
   const onFocus = () => {
     strOld = el.value
   }
@@ -36,8 +35,9 @@ const bind = (el, binding, vnode) => {
   const onBlur = () => {
     strNew = el.value
     if (isModified(strOld, strNew)) {
-      binding.value()
+      onModify(strOld, strNew)
     }
+    strOld = strNew
   }
 
   registeredHandlers.push(
