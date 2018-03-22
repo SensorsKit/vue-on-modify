@@ -17,12 +17,57 @@ const on = (el, eventName, callback) => {
 }
 
 const bind = (el, binding, vnode) => {
+  const onModify = binding.value
+
+  if (typeof onModify !== 'function') {
+    log.e('指令需要传入一个函数')
+    return
+  }
+
+  unbind(el)
+
+  let strOld = null
+  let strNew = null
+
+  const onFocus = () => {
+    strOld = el.value
+  }
+
+  const onBlur = () => {
+    strNew = el.value
+    if (isModified(strOld, strNew)) {
+      binding.value()
+    }
+  }
+
+  registeredHandlers.push(
+    on(el, 'focus', onFocus),
+    on(el, 'blur', onBlur)
+  )
 }
 
 const unbind = el => {
+  if (!registeredHandlers.length) {
+    return
+  }
+  let index = registeredHandlers.length - 1
+  while (index >= 0) {
+    const handler = registeredHandlers[index]
+
+    if (handler.el === el) {
+      handler.destroy()
+      registeredHandlers.splice(index, 1)
+    }
+
+    index -= 1
+  }
 }
 
 const update = (el, binding) => {
+  if (binding.value === binding.oldValue) {
+    return
+  }
+  bind(el, binding)
 }
 
 OnModifyPlugin.install = function (Vue, options) {
