@@ -18,7 +18,7 @@ const on = (el, eventName, callback) => {
 
 const bind = (el, binding, vnode) => {
   const onModify = binding.value
-  let strOld = null
+  let strOld = el.value
   let strNew = null
 
   if (typeof onModify !== 'function') {
@@ -37,7 +37,7 @@ const bind = (el, binding, vnode) => {
     if (isModified(strOld, strNew)) {
       onModify(strOld, strNew)
     }
-    strOld = strNew
+    // strOld = strNew
   }
 
   registeredHandlers.push(
