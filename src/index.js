@@ -1,4 +1,5 @@
 import isModified from './isModified'
+import { getInputFromEl } from './util'
 
 const OnModifyPlugin = {}
 const registeredHandlers = []
@@ -17,6 +18,12 @@ const on = (el, eventName, callback) => {
 }
 
 const bind = (el, binding, vnode) => {
+  el = getInputFromEl(el)
+
+  if (!el) {
+    return log.e('绑定的元素内未找到 input 标签！')
+  }
+
   const onModify = binding.value
   let strOld = el.value
   let strNew = null
@@ -39,13 +46,12 @@ const bind = (el, binding, vnode) => {
     }
   }
 
-  registeredHandlers.push(
-    on(el, 'focus', onFocus),
-    on(el, 'blur', onBlur)
-  )
+  registeredHandlers.push(on(el, 'focus', onFocus), on(el, 'blur', onBlur))
 }
 
 const unbind = el => {
+  el = getInputFromEl(el)
+
   if (!registeredHandlers.length) {
     return
   }
@@ -69,7 +75,7 @@ const update = (el, binding) => {
   bind(el, binding)
 }
 
-OnModifyPlugin.install = function (Vue, options) {
+OnModifyPlugin.install = function(Vue, options) {
   const directiveName =
     options && options.directive ? options.directive : 'on-modify'
   Vue.directive(directiveName, {
