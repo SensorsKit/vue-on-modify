@@ -2,8 +2,8 @@
   <div class="container">
     <input autofocus v-model="value" type="text" v-on-modify="onModify">
     <p>你刚刚修改了 {{count}} 次。</p>
-    <p>修改前值为 {{valueBefore}}</p>
-    <p>修改后值为 {{valueAfter}}</p>
+    <p v-if="count> 0">最近一次修改的修改前值为 {{valueBefore}}，修改后值为 {{valueAfter}}</p>
+    <p v-else>最近一次修改还没发生。</p>
     <span class="icon-delete" @click="$emit('remove')"></span>
   </div>
 </template>
