@@ -1,7 +1,7 @@
 {
   "name": "@sensorskit/vue-on-modify",
   "description": "vue custom directive of modify binding",
-  "version": "1.0.1",
+  "version": "0.0.1",
   "author": "newraina <newraina@users.noreply.github.com>",
   "main": "lib/vue-on-modify.js",
   "repository": "github:SensorsKit/vue-on-modify",
