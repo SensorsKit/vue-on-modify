@@ -31,8 +31,11 @@ const bind = (el, binding, vnode) => {
   if (typeof onModify !== 'object' && typeof onModify !== 'function') {
     log.e('指令需要传入一个函数或对象！')
     return
-  } else if (typeof onModify === 'object' && !onModify.method) {
-    log.e('指令对象必须包含method！')
+  } else if (
+    typeof onModify === 'object' &&
+    typeof onModify.method !== 'function'
+  ) {
+    log.e('指令对象必须包含method且method必须为函数！')
     return
   }
 
@@ -45,16 +48,19 @@ const bind = (el, binding, vnode) => {
   const onBlur = () => {
     strNew = el.value
     if (isModified(strOld, strNew)) {
+      let params = null
       if (typeof onModify === 'object') {
         let { method, ...args } = onModify
-
         if (Object.keys(args).length === 0) {
-          onModify.method(strOld, strNew)
+          params = {strOld, strNew}
+          onModify.method(params)
         } else {
-          onModify.method(strOld, strNew, args)
+          params = {strOld, strNew, args}
+          onModify.method(params)
         }
       } else {
-        onModify(strOld, strNew)
+        params = {strOld, strNew}
+        onModify(params)
       }
     }
   }
