@@ -28,8 +28,14 @@ const bind = (el, binding, vnode) => {
   let strOld = el.value
   let strNew = null
 
-  if (typeof onModify !== 'function') {
-    log.e('指令需要传入一个函数')
+  if (typeof onModify !== 'object' && typeof onModify !== 'function') {
+    log.e('指令需要传入一个函数或对象！')
+    return
+  } else if (
+    typeof onModify === 'object' &&
+    typeof onModify.method !== 'function'
+  ) {
+    log.e('指令对象必须包含method且method必须为函数！')
     return
   }
 
@@ -42,11 +48,27 @@ const bind = (el, binding, vnode) => {
   const onBlur = () => {
     strNew = el.value
     if (isModified(strOld, strNew)) {
-      onModify(strOld, strNew)
+      let params = null
+      if (typeof onModify === 'object') {
+        let { method, ...args } = onModify
+        if (Object.keys(args).length === 0) {
+          params = {strOld, strNew}
+          method(params)
+        } else {
+          params = {strOld, strNew, args}
+          method(params)
+        }
+      } else {
+        params = {strOld, strNew}
+        onModify(params)
+      }
     }
   }
 
-  registeredHandlers.push(on(el, 'focus', onFocus), on(el, 'blur', onBlur))
+  registeredHandlers.push(
+    on(el, 'focus', onFocus),
+    on(el, 'blur', onBlur)
+  )
 }
 
 const unbind = el => {
@@ -70,6 +92,24 @@ const unbind = el => {
 
 const update = (el, binding) => {
   if (binding.value === binding.oldValue) {
+    return
+  } else if (
+    typeof binding.value === 'function' &&
+    typeof binding.oldValue === 'object' &&
+    binding.value === binding.oldValue.method
+  ) {
+    return
+  } else if (
+    typeof binding.oldValue === 'function' &&
+    typeof binding.value === 'object' &&
+    binding.oldValue === binding.value.method
+  ) {
+    return
+  } else if (
+    typeof binding.oldValue === 'object' &&
+    typeof binding.value === 'object' &&
+    binding.value.method === binding.oldValue.method
+  ) {
     return
   }
   bind(el, binding)
