@@ -65,7 +65,10 @@ const bind = (el, binding, vnode) => {
     }
   }
 
-  registeredHandlers.push(on(el, 'focus', onFocus), on(el, 'blur', onBlur))
+  registeredHandlers.push(
+    on(el, 'focus', onFocus),
+    on(el, 'blur', onBlur)
+  )
 }
 
 const unbind = el => {
