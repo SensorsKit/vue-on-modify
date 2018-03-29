@@ -4,8 +4,8 @@
     <p v-if="isParams">指令带的参数是{{ args }}</p>
     <p v-else>指令没有带参数</p>
     <p>你刚刚修改了 {{count}} 次。</p>
-    <p v-if="count> 0">最近一次修改的修改前值为 {{valueBefore}}，修改后值为 {{valueAfter}}</p>
-    <p v-else>最近一次修改还没发生。</p>
+    <p v-if="count > 0">修改前值为 {{valueBefore?valueBefore:'空'}}, 修改后值为 {{valueAfter?valueAfter:'空'}}</p>
+    <p v-else>最近一次修改还没发生。 </p>
     <span class="icon-delete" @click="$emit('remove')"></span>
   </div>
 </template>
