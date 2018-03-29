@@ -53,10 +53,10 @@ const bind = (el, binding, vnode) => {
         let { method, ...args } = onModify
         if (Object.keys(args).length === 0) {
           params = {strOld, strNew}
-          onModify.method(params)
+          method(params)
         } else {
           params = {strOld, strNew, args}
-          onModify.method(params)
+          method(params)
         }
       } else {
         params = {strOld, strNew}

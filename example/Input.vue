@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <input autofocus v-model="value" type="text" v-on-modify="{ method:onModify, name: 'Snow', age: 23 }">
+    <input autofocus v-model="value" type="text" v-on-modify="{ method:onModify, name: 'Aya', age: '16' }">
     <p v-if="isParams">指令带的参数是{{ args }}</p>
     <p v-else>指令没有带参数</p>
     <p>你刚刚修改了 {{count}} 次。</p>
@@ -23,13 +23,13 @@
   },
 
   methods: {
-    onModify(strOld, strNew, args) {
+    onModify(params) {
       this.count++
-      this.valueBefore = strOld
-      this.valueAfter = strNew
-      if (args) {
+      this.valueBefore = params.strOld
+      this.valueAfter = params.strNew
+      if (params.args) {
         this.isParams = true
-        this.args = args
+        this.args = params.args
       }
     }
   }
