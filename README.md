@@ -44,7 +44,7 @@ Vue.use(VueOnModify, {
 
 ```html
 <!-- method为必填项，且值必须为函数，之后的参数为可选 -->
-<input type="text" v-on-modify="{ method: onModify, name: 'Taylor', age: '29' }"
+<input type="text" v-on-modify="{ method: onModify, name: 'Taylor', age: '29' }">
 ```
 
 ```js
